@@ -1,7 +1,7 @@
 import dayjs from "dayjs"
 import express, { Request, Response } from "express"
 const adminService = require("../services/AdminService")
-const encriptionService = require("../services/EncryptionService")
+const encryptionService = require("../services/EncryptionService")
 const authService = require("../services/AuthService")
 const authRouter = express.Router()
 
@@ -12,7 +12,7 @@ authRouter
             const knexInstance = req.app.get("db")
             const { email, secret } = req.body.email ? req.body : req.query
             adminService.getAdminByEmail(knexInstance, email).then((admin: AdminTypes) => {
-                encriptionService.compareHash(secret, admin.hash).then((isValid: boolean) => {
+                encryptionService.compareHash(secret, admin.hash).then((isValid: boolean) => {
                     if (isValid) {
                         let jwtProperties = admin
                         delete jwtProperties.hash

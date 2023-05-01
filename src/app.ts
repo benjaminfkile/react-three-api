@@ -5,7 +5,13 @@ const cors = require("cors")
 const helmet = require("helmet")
 const bodyParser = require("body-parser")
 const app: Express = express()
+const entryRouter = require("./routes/EntryRouter")
+const aboutRouter = require("./routes/AboutRouter")
+const timelineRouter = require("./routes/TimelineRouter")
+const skillRouter = require("./routes/SkillRouter")
+const portfolioRouter = require("./routes/PortfolioRouter")
 const authRouter = require("./routes/AuthRouter")
+const encryptionRouter = require("./routes/EncryptionRouter")
 
 const morganOption = (NODE_ENV === "production")
   ? "tiny"
@@ -18,18 +24,23 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (req: Request, res: Response, next: NextFunction) => {
   res.send("portfolio api")
 })
 
+app.use("/api/entry", entryRouter)
+app.use("/api/about", aboutRouter)
+app.use("/api/timeline", timelineRouter)
+app.use("/api/skills", skillRouter)
+app.use("/api/portfolio", portfolioRouter)
 app.use("/api/auth", authRouter)
+app.use("/api/encryption", encryptionRouter)
 
-app.use(function errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
-  if (res.headersSent) {
-    return next(err)
-  }
-  res.status(500)
-  // res.render('error', { error: err })
+
+process.on('uncaughtException', (err) => {
+  console.error(err);
+  console.log("Node NOT Exiting...");
+
 })
 
 module.exports = app

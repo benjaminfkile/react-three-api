@@ -21,7 +21,9 @@ const db = knex({
 
 app.set("db", db)
 
-ss.intit(io, db)
+app.set("io", io)
+
+ss.intit(io, db, app)
 
 server.listen(PORT, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`)

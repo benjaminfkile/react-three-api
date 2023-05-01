@@ -5,6 +5,6 @@ type AdminTypes = {
     email: string
     hash?: string
     created: string
-    modified: string
-    deleted: string
+    modified: string | null
+    deleted: string | null
 }

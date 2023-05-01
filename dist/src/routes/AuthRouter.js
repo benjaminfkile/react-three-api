@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const dayjs_1 = __importDefault(require("dayjs"));
 const express_1 = __importDefault(require("express"));
 const adminService = require("../services/AdminService");
-const encriptionService = require("../services/EncryptionService");
+const encryptionService = require("../services/EncryptionService");
 const authService = require("../services/AuthService");
 const authRouter = express_1.default.Router();
 authRouter
@@ -16,7 +16,7 @@ authRouter
         const knexInstance = req.app.get("db");
         const { email, secret } = req.body.email ? req.body : req.query;
         adminService.getAdminByEmail(knexInstance, email).then((admin) => {
-            encriptionService.compareHash(secret, admin.hash).then((isValid) => {
+            encryptionService.compareHash(secret, admin.hash).then((isValid) => {
                 if (isValid) {
                     let jwtProperties = admin;
                     delete jwtProperties.hash;
